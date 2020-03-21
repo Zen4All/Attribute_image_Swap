@@ -770,10 +770,12 @@ function translate_type_to_name($opt_type) {
                       TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_2 . '<br />' .
                       TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_3 . '<br />' .
                       TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_4 . '<br />' .
-                      TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_5 . '<br />' /* mc12345678 Attribute Image Swap Start 1 of 1 */.
+                      TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_5 . '<br />' .
+                      /* mc12345678 Attribute Image Swap Start 1 of 1 */
                       TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_6 . '<br />' .
                       TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_7 . '<br />' .
-                      TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_8; /* mc12345678 Attribute Image Swap End 1 of 1 */
+                      TEXT_OPTION_ATTRIBUTE_IMAGES_STYLE_8;
+                      /* mc12345678 Attribute Image Swap End 1 of 1 */
                       ?>
                   </td>
                 </tr>
