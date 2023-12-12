@@ -84,7 +84,7 @@ class zcAjaxAttribImageSwap extends base {
 
         // Remove the excess script related portions of the response to give just
         //   the basic HTML content
-        $script_link = str_replace('<script type="text/javascript">' . "\n" . 'document.write(\'', '', $script_link);
+        $script_link = str_replace('<script>' . "\n" . 'document.write(\'', '', $script_link);
         $script_link = str_replace(');' . "\n" . '</script>', '', $script_link);
         $script_link = str_replace('\/', '/', $script_link);
         $script_link = str_replace('\'', '', $script_link);

@@ -8,7 +8,7 @@ class zcObserverAttribImageSwap extends base {
 
   public function __construct()
   {
-    $observeThis = array();
+    $observeThis = [];
     $observeThis[] = 'NOTIFY_ATTRIBUTES_MODULE_START_OPTION';
     $observeThis[] = 'NOTIFY_ATTRIBUTES_MODULE_START_OPTIONS_LOOP';
     $observeThis[] = 'NOTIFY_ATTRIBUTES_MODULE_FORMAT_VALUE';

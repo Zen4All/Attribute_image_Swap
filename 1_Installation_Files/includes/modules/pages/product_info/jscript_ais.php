@@ -20,10 +20,9 @@
 // $Id: jscript_ais.php,v 1.1 2016/10/17 21:50:47 tbowen Exp $ mc12345678 2016-12-14
 //
 ?>
-<script type="text/javascript">
+<script>
 <?php if (ATTRIBUTES_ENABLED_IMAGES == 'true') { ?>
-    const origImage = document.getElementById("productMainImage").innerHTML; // "Global" variable to store the original Image.
-
+    const origImage = $('#productMainImage').html();
     function getattribimage(attribfield, width, height, products_options_values_id, products_id) {
 
       zcJS.ajax({
@@ -37,9 +36,9 @@
       }).done(function (resultArray) {
         let product_color_image = resultArray.image_link;
         if (product_color_image !== "") {
-          document.getElementById("productMainImage").innerHTML = product_color_image;
+          $('#productMainImage').html(product_color_image);
         } else {
-          document.getElementById("productMainImage").innerHTML = origImage; // Return to original image.
+          $('#productMainImage').html(origImage); // Return to original image.
         }
   <?php
   if (defined('ZEN_COLORBOX_STATUS') && ZEN_COLORBOX_STATUS == 'true') {
@@ -63,7 +62,9 @@ if ($ais_support) {
           WHERE patrib.products_id= " . (int)$_GET['products_id'] . "
           AND patrib.options_id = popt.products_options_id
           AND popt.language_id = " . (int)$_SESSION['languages_id'] . "
-          AND (popt.products_options_images_style = 6 OR popt.products_options_images_style = 8)
+          AND (popt.products_options_images_style = 6
+            OR popt.products_options_images_style = 8
+          )
           LIMIT 1";
   $has_ais = $db->Execute($sql);
   $ais_support = $has_ais->fields['quantity'] > 0;
