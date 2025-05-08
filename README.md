@@ -1,2 +1,130 @@
 # Attribute_image_Swap
-Known as: Attribute image replaces main product image on sel at: https://www.zen-cart.com/downloads.php?do=file&amp;id=699
+Known as: Attribute image replaces main product image on selection at: https://www.zen-cart.com/downloads.php?do=file&amp;id=699
+
+In this improved verson, the main image remains the same for the attribute which does not have attribute images and returns
+to the product image after selecting an attribute that doesn't have an attribute image. It also now supports at least using
+the image provided by image handlers such as Image Handler version 4 or version 5 and showing the swapped image inside of
+Zen Colorbox.
+This module provides the functionality to get the attribute image in place of the main product image when the user selects
+the particular attribute.
+This functionality has full control through admin. It can be turned on and off for designated option names from the admin.
+It is very easy to integrate with zen cart.
+The image selected is also carried over into the shopping cart through an observer.  If there is existing software that
+displays the attribute dependent selected image, then recommend that the installation of the feature added here be omitted.
+
+To use this functionality,
+rename the YOUR_TEMPLATE directory found in 2_ZC_Version/YOUR_VERSION/includes/modules to the name of your template and merge 
+the contents of the file(s) in that folder with the file(s) in your existing template folder.  YOUR_VERSION is the base Zen Cart
+Version of your store such as Zen Cart 1.5.5 would be in ZC155.  The latest stable version of the file(s) in this folder have been
+included; however, it is most important to simply incorporated the changes made to support this software.  The file has been made
+compatible with potteryhouse's stock by attributes, with products attribute grid and is based on ZC 1.5.5.  
+
+In the root directory of 1_Main_Files is a copy of ZC 1.5.6b's ajax.php file that was updated in June 2019 and which should be an
+improved version over previous ZC versions and it should also replace the use of attrib_prod_info.php and add the protection
+offered by ZC functionality.  Until this file is found to produce a compatibility problem, it will be carried in the 1_Main_Files
+section.
+
+Two ways to address the admin files of 1_Main_Files and 2_ZC_Version: either rename the admin folder to your *SECRET* admin directory name and upload
+both the newly named admin directory and the includes folders to the root of your store (suggest merging file contents
+wherever an existing file is present in your store's copy), or can copy/merge the contents of the admin directory into
+the admin directory of your store.
+
+Running the sql query in the admin, tools->install SQL Patches area will add the products options type link and nothing
+extra, although the true functionality of that option does not yet appear to be revealed, so probably could be omitted.
+If the products options type link is already present, there is no need to run the sql again as it will add it again.
+
+Install/copy this module and (if desired to access the option name type of link) run the sql query using tools->admin sql patches. 
+To turn this functionality ON select the option name in option name manager and put the value 6, 7, or 8 in Attribute Style for Radio Buttons/Checkbox:text box.
+It also works for check box and has additional option type Link.
+Attribute images shown on the product listing page can be made off by entering an Attribute Style value 7 (swap will not occur) or 
+Attribute Style value 8 where the swap will occur.
+For those that wish to merge the functionality further with other javascript related code, the product image is returned
+from the file: includes/classes/ajax/zcAttrib_prod_info.php and the function swap_image of the class.
+The return code will be json_encoded by ajax.php then will go through JSON.parse on the receiving page.  Thus, addition
+of other javascript into that return will have to be properly escaped to maintain valid JSON throughout the communication.
+Code for color-box or other main-image modifiers can be added to that return result.
+
+The file includes/classes/observers/auto.attrib_image_swap_shopping_cart.php was added to handle replacing the product's
+image with the attribute related image as configured by this plugin.  If another plugin performs the same operation and is
+preferred, then this file can be omitted from the installation.
+Will appreciate response. Please provide comment about the plugin to further upgrade this module.
+Thanks. 
+
+If after installation/load of the includes/modules/YOUR_TEMPLATE/attributes.php
+you find that standard dropdown (select) attributes are not displayed, then
+either you haven't updated to ZC 1.5.5 and an older ZC plugin has removed expected
+database values or the upgrade was not properly completed.  At any rate, the most
+likely solution is to run the contents of the sql_run_missing_dropdowns.txt file
+through the admin->Tools->Install SQL Patches tool to restore the necessary 
+database records.
+
+For all installations, the following file(s) do not need to be uploaded to the server:
+read me updated.txt
+sql_run.txt
+sql_run_missing_dropdowns.txt
+sql_run_remove.txt
+
+For new installations or updates after v1.5.6 of this plugin, the following additional file(s) do not need to be uploaded to the server:
+attrib_prod_info.php
+includes/functions/extra_functions/vishal_functions.php
+
+For upgrades to v1.5.6 of this plugin, the following file(s) should be removed from the server:
+attrib_prod_info.php
+includes/functions/extra_functions/vishal_functions.php
+
+For upgrades from 1.5.6 to v1.5.7 of this plugin:
+Replace: includes/classes/ajax/zcAttrib_prod_info.php
+includes/classes/observers/auto.attrib_image_swap.php
+includes/modules/pages/product_info/jscript_ais.php
+includes/modules/pages/product_info/on_load_ais.js
+
+Add: admin/includes/auto_loaders/config.attribute_image_swap.php
+
+Updated 06/16/19, V1.5.10: (mc12345678)
+- Primarily updated what is now considered 1_Main_Files.
+- Moved files into sub-folders to improve clarity of installation and to identify Zen Cart version specific files.
+- Moved admin language defines out of the core language file for options_name_manager.php and placed in a separate file.
+- Updated ajax.php file to the Zen Cart V1.5.6b version.
+- Addressed a few minor PHP 7.3 related issues.
+- Improved incorporation with Zen Colorbox.
+- Added display of images for option type 6 when applied to radio buttons and checkboxes as if the image type had been set to 0.
+- Added scope declaration for methods in the observer class.
+- Updated install and remove SQL, including comments for understanding.
+
+Updated 04/07/18, V1.5.9: (mc12345678)
+- Added try/catch javascript style code to support return from shopping cart where attributes do not have an assigned action.
+- Added observer to modify the shopping_cart image based on selections made when adding the product to the cart.
+- Corrected an encoding issue with the ajax file (Changed from UTF-8 with BOM to ANSI)
+- Added the $zco_notifier to the ajax file to support changes made in the module main_product_images to offer the use of observers.
+- Reworked the ajax file to offer up-front processing.
+- Added a function (get_attrib_image) to the observer class to reduce code redundancy and to offer a consistent image retrieval method.
+
+Updated 07/16/17, V1.5.8: (mc12345678)
+- Incorporated an option to swap the attribute image but not to show the attribute image adjacent to the attributes.
+- Added some code commenting in areas to highlight code changes needed for installation.
+- Incorporate additional data type casting to ensure data is provided in a known format.
+- Reduce the file checking if PRODUCTS_IMAGE_LARGER_TEXT_FILE_IMAGE is defined and set to off.
+- Incorporate the code applicable to [zen colorbox](https://www.zen-cart.com/downloads.php?do=file&id=1322) to support
+    the swapped image being used within the colorbox in version 2.1.0 of that plugin or higher.
+- Further refined the display/transmission of the additional javascript handling image swap if the setting(s) support 
+    displaying the image (ie. a status of 6 or 8 at this time as a status of 7 disables the display of attribute images.
+- Corrected initial load (reload upon return from shopping cart with product in the cart) functionality to properly handle
+    checkbox and radio selections, also to not try to take image action while updating the quantity of product.
+
+Discussion of changes for v1.5.7:
+- Added "Removal" of most of the javascript code if the admin option to not display attribute images is set to true.  This
+is expected to have a positive impact on load speed for such conditions.
+- Modified the approach to the image swap, but left behind the previous code with it commented out.  The reason is that
+  now instead of returning a newly formatted image (which requires more device communication), the original image is
+  "restored" if there is no attribute image assigned.
+- Added some console logging of debug information if the attempt to execute the initialization code fails.
+
+Updated by mc12345678: mc12345678.com on 10 Jan 2017 v1.5.7 [User profile](https://www.zen-cart.com/member.php?120199-mc12345678)
+
+Updated by mc12345678: mc12345678.com on 18 Dec 2016 v1.5.6 [User profile](https://www.zen-cart.com/member.php?120199-mc12345678)
+
+Previously updated by travbow on 19 Oct 2016 v1.5.5 [User profile](https://www.zen-cart.com/member.php?197702-travbow)
+
+Updated again by vishalmelmatti on 13 Apr 2008 v1.3.7
+
+First published to ZC:  vishalmelmatti 11 Apr 2008 V1.3.7 [User profile](https://www.zen-cart.com/member.php?53609-vishalmelmatti)

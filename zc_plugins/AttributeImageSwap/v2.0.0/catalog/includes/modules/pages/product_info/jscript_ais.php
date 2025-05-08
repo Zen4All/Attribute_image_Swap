@@ -20,12 +20,12 @@
 // $Id: jscript_ais.php,v 1.1 2016/10/17 21:50:47 tbowen Exp $ mc12345678 2016-12-14
 //
 ?>
-<script type="text/javascript">
+<script>
 <?php if (ATTRIBUTES_ENABLED_IMAGES == 'true') { ?>
-    const origImage = document.getElementById("productMainImage").innerHTML; // "Global" variable to store the original Image.
-
+window.addEventListener('DOMContentLoaded', () => {
+    const origImage = $('#productMainImage').html();
     function getattribimage(attribfield, width, height, products_options_values_id, products_id) {
-
+console.log('hllo');
       zcJS.ajax({
         url: 'ajax.php?act=ajaxAttribImageSwap&method=swap_image',
         data: {
@@ -35,11 +35,12 @@
           'products_id': products_id
         }
       }).done(function (resultArray) {
+        console.log(resultArray);
         let product_color_image = resultArray.image_link;
         if (product_color_image !== "") {
-          document.getElementById("productMainImage").innerHTML = product_color_image;
+          $('#productMainImage').html(product_color_image);
         } else {
-          document.getElementById("productMainImage").innerHTML = origImage; // Return to original image.
+          $('#productMainImage').html(origImage); // Return to original image.
         }
   <?php
   if (defined('ZEN_COLORBOX_STATUS') && ZEN_COLORBOX_STATUS == 'true') {
@@ -48,6 +49,7 @@
   ?>
       });
     }
+});
 <?php } ?>
   function ais_init() {
     let n = document.forms.length;
@@ -57,15 +59,19 @@
 $ais_support = defined('ATTRIBUTES_ENABLED_IMAGES') && ATTRIBUTES_ENABLED_IMAGES == 'true' && isset($_GET['products_id']) && $_GET['products_id'] != '' && zen_has_product_attributes((int)$_GET['products_id']);
 
 if ($ais_support) {
-  $sql = "SELECT count(*) AS quantity
+//  zc_dump($ais_support);
+  $sql = "SELECT COUNT(*) AS quantity
           FROM " . TABLE_PRODUCTS_OPTIONS . " popt,
                " . TABLE_PRODUCTS_ATTRIBUTES . " patrib
-          WHERE patrib.products_id= " . (int)$_GET['products_id'] . "
+          WHERE patrib.products_id = " . (int)$_GET['products_id'] . "
           AND patrib.options_id = popt.products_options_id
           AND popt.language_id = " . (int)$_SESSION['languages_id'] . "
-          AND (popt.products_options_images_style = 6 OR popt.products_options_images_style = 8)
+          AND (popt.products_options_images_style = 6
+            OR popt.products_options_images_style = 8
+          )
           LIMIT 1";
   $has_ais = $db->Execute($sql);
+//  zc_dump($has_ais);
   $ais_support = $has_ais->fields['quantity'] > 0;
   ?>
       let theForm = false;
@@ -80,13 +86,14 @@ if ($ais_support) {
       if (theForm) {
         n = theForm.elements.length;
         for (i = 0; i < n; i++) {
-          if (theForm.elements[i].name == "cart_quantity") {
+          if (theForm.elements[i].name == 'cart_quantity') {
             continue;
           }
           switch (theForm.elements[i].type) {
             case "select":
             case "select-one":
               try {
+//			  console.log(theForm.elements[i]);
                 theForm.elements[i].onchange();
               } catch (err) {
                 // Action not associated with element.
@@ -130,5 +137,8 @@ if ($ais_support) {
         }
       }
 <?php } ?>
-  }
+  };
+  window.addEventListener('load', function () {
+    ais_init();
+  });
 </script>
